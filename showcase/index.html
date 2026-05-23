@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Martin Kaiser — Web-Entwicklung für Events, Communities & Newsletter</title>
-  <meta name="description" content="Schnelle, datensparsame Websites mit Buchung und Newsletter. Gebaut auf Netlify, Supabase und Brevo — DSGVO-konform, EU-gehostet, ohne Tracking.">
+  <title>DSGVO-konformer Newsletter — Einrichtung als Service | Martin Kaiser</title>
+  <meta name="description" content="Ich integriere einen automatischen, DSGVO-konformen Newsletter in deine bestehende Website. Volle Datenkontrolle, kostenfreies EU-Hosting, kein Tracking. Einrichtung ab 390 € einmalig, 0 € laufende Kosten.">
   <meta name="robots" content="index,follow">
-  <meta property="og:title" content="Martin Kaiser — Web-Entwicklung für Events & Communities">
-  <meta property="og:description" content="Editorial-Landingpages mit Buchung, Newsletter und Mail-Automation. EU-gehostet, ohne Tracking.">
+  <meta property="og:title" content="DSGVO-konformer Newsletter — Einrichtung als Service">
+  <meta property="og:description" content="Automatischer Newsletter in deiner Website. Volle Datenkontrolle, kostenfreies EU-Hosting, kein Tracking. 0 € laufende Kosten.">
   <meta property="og:type" content="website">
   <style>
     :root{
       --bg:oklch(97.5% 0.009 78); --surface:#fff; --surface-warm:oklch(96.5% 0.014 80);
-      --fg:oklch(16% 0.022 62); --muted:oklch(50% 0.018 68); --subtle:oklch(74% 0.016 72);
+      --fg:oklch(16% 0.022 62); --muted:oklch(50% 0.018 62); --subtle:oklch(74% 0.016 72);
       --border:oklch(89% 0.016 78); --accent:oklch(59% 0.168 50); --accent-bg:oklch(95.5% 0.030 82);
       --serif:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;
       --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
@@ -33,7 +33,6 @@
     h3{font-size:1.18rem;letter-spacing:-.01em}
     p{margin:0}
 
-    /* nav */
     header.nav{position:sticky;top:0;z-index:20;backdrop-filter:saturate(1.2) blur(10px);
       background:color-mix(in oklab,var(--bg) 86%,transparent);border-bottom:1px solid transparent;transition:border-color .2s}
     header.nav.scrolled{border-color:var(--border)}
@@ -50,74 +49,73 @@
     .btn-ghost{border-color:var(--border);background:var(--surface);color:var(--fg)}
     .nav .btn{min-height:38px;padding:0 16px;font-size:13px}
 
-    /* hero */
-    .hero{padding:clamp(56px,11vw,128px) 0 clamp(40px,7vw,80px)}
+    .hero{padding:clamp(56px,11vw,124px) 0 clamp(36px,6vw,64px)}
     .hero .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:13px;color:var(--muted);
       background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:7px 15px;margin-bottom:26px}
     .dot{width:7px;height:7px;border-radius:50%;background:#3aaa5e;box-shadow:0 0 0 3px color-mix(in oklab,#3aaa5e 25%,transparent)}
-    .hero h1{max-width:14ch}
-    .hero-lede{font-size:clamp(1.05rem,2vw,1.3rem);color:var(--muted);max-width:52ch;margin:24px 0 34px}
-    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-    .stack-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:40px}
-    .chip{font-size:12.5px;color:var(--muted);background:var(--surface);border:1px solid var(--border);
-      border-radius:8px;padding:7px 12px;font-family:var(--mono)}
+    .hero h1{max-width:15ch}
+    .hero-lede{font-size:clamp(1.05rem,2vw,1.3rem);color:var(--muted);max-width:54ch;margin:24px 0 34px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .hero-actions .note{font-size:13px;color:var(--muted)}
+    .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:40px}
+    .badge{font-size:12.5px;color:var(--fg);background:var(--surface);border:1px solid var(--border);
+      border-radius:999px;padding:8px 14px;display:inline-flex;gap:7px;align-items:center}
+    .badge b{color:var(--accent)}
 
-    /* sections */
-    section{padding:clamp(48px,8vw,92px) 0}
-    .section-head{max-width:60ch;margin-bottom:48px}
+    section{padding:clamp(48px,8vw,88px) 0}
+    .section-head{max-width:60ch;margin-bottom:44px}
     .section-head p{color:var(--muted);margin-top:16px;font-size:1.05rem}
 
-    /* products */
-    .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
-    .product{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-      padding:30px;display:flex;flex-direction:column;gap:14px;transition:transform .18s,box-shadow .18s}
-    .product:hover{transform:translateY(-3px);box-shadow:var(--shadow)}
-    .product.feature{grid-column:1/-1;background:linear-gradient(180deg,var(--accent-bg),var(--surface));
-      border-color:color-mix(in oklab,var(--accent) 30%,var(--border))}
-    .product .tag{align-self:flex-start;font-size:11px;letter-spacing:.12em;text-transform:uppercase;
-      font-weight:600;color:var(--accent);background:var(--surface);border:1px solid color-mix(in oklab,var(--accent) 35%,var(--border));
-      border-radius:999px;padding:5px 11px}
-    .product p{color:var(--muted);font-size:.97rem}
-    .product ul{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:.93rem;line-height:1.8}
-    .feature .grid{display:grid;grid-template-columns:1.3fr 1fr;gap:34px;align-items:center}
-    .feature .demo{background:var(--fg);border-radius:14px;padding:22px;font-family:var(--mono);
-      font-size:12.5px;color:#e8dccb;overflow:auto;line-height:1.7}
-    .feature .demo .c{color:#8a7d6b}
-    .feature .demo .k{color:#e0a04d}
-    .feature .demo .s{color:#9fcf7f}
-    @media(max-width:720px){.feature .grid{grid-template-columns:1fr}}
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
+    .feature{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;display:flex;flex-direction:column;gap:10px}
+    .feature .ico{width:38px;height:38px;border-radius:10px;background:var(--accent-bg);display:flex;align-items:center;justify-content:center;font-size:19px}
+    .feature h3{font-size:1.05rem}
+    .feature p{color:var(--muted);font-size:.94rem}
 
-    /* how / flow */
+    .highlight{background:var(--fg);color:var(--bg);border-radius:var(--radius);padding:clamp(30px,5vw,52px)}
+    .highlight .kicker{color:#e0a04d}
+    .highlight h2{color:var(--bg);max-width:24ch}
+    .cost-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:22px;margin-top:36px}
+    .cost{border-top:1px solid color-mix(in oklab,var(--bg) 22%,transparent);padding-top:18px}
+    .cost b{display:block;font-family:var(--serif);font-size:2rem;color:var(--bg);line-height:1}
+    .cost span{display:block;margin-top:8px;font-size:.92rem;color:color-mix(in oklab,var(--bg) 68%,transparent)}
+    .highlight .fine{margin-top:28px;font-size:12px;color:color-mix(in oklab,var(--bg) 52%,transparent);max-width:70ch}
+
     .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:step}
     .flow .step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:26px;position:relative}
-    .flow .step::before{counter-increment:step;content:counter(step);font-family:var(--serif);font-size:2.2rem;
-      color:var(--subtle);position:absolute;top:16px;right:22px}
+    .flow .step::before{counter-increment:step;content:counter(step);font-family:var(--serif);font-size:2.2rem;color:var(--subtle);position:absolute;top:16px;right:22px}
     .flow .step h3{margin-bottom:8px}
     .flow .step p{color:var(--muted);font-size:.95rem}
     @media(max-width:720px){.flow{grid-template-columns:1fr}}
 
-    /* values */
-    .values{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
-    .value{padding:24px;border-left:2px solid var(--accent);background:var(--surface-warm);border-radius:0 12px 12px 0}
-    .value h3{font-family:var(--sans);font-size:1rem;font-weight:600;margin-bottom:6px}
-    .value p{color:var(--muted);font-size:.92rem}
+    .price-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:20px}
+    @media(max-width:760px){.price-grid{grid-template-columns:1fr}}
+    .price-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;display:flex;flex-direction:column}
+    .price-card.main{border-color:color-mix(in oklab,var(--accent) 40%,var(--border));background:linear-gradient(180deg,var(--accent-bg),var(--surface))}
+    .price-card .tag{align-self:flex-start;font-size:11px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--accent);
+      background:var(--surface);border:1px solid color-mix(in oklab,var(--accent) 35%,var(--border));border-radius:999px;padding:5px 11px;margin-bottom:18px}
+    .price-card h3{font-size:1.25rem;margin-bottom:6px}
+    .price-card .amount{font-family:var(--serif);font-size:2.6rem;line-height:1;margin:14px 0 4px}
+    .price-card .amount small{font-size:.9rem;color:var(--muted);font-family:var(--sans)}
+    .price-card .sub{color:var(--muted);font-size:.92rem;margin-bottom:18px}
+    .price-card ul{list-style:none;margin:0 0 22px;padding:0;display:flex;flex-direction:column;gap:9px}
+    .price-card li{display:flex;gap:10px;font-size:.94rem;color:var(--fg)}
+    .price-card li::before{content:"✓";color:var(--accent);font-weight:700}
+    .price-card .foot{margin-top:auto}
+    .price-aside{display:flex;flex-direction:column;gap:20px}
+    .price-aside .box{background:var(--surface-warm);border:1px solid var(--border);border-radius:var(--radius);padding:24px}
+    .price-aside .box h3{font-family:var(--sans);font-size:1rem;font-weight:600;margin-bottom:8px}
+    .price-aside .box p{color:var(--muted);font-size:.92rem}
+    .price-aside .running{font-family:var(--serif);font-size:1.6rem;color:var(--accent)}
 
-    /* case */
-    .case{background:var(--fg);color:var(--bg);border-radius:var(--radius);padding:clamp(30px,5vw,56px);
-      display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
-    .case .kicker{color:#e0a04d}
-    .case h2{color:var(--bg)}
-    .case p{color:color-mix(in oklab,var(--bg) 72%,transparent);margin-top:16px}
-    .case .metrics{display:flex;gap:30px;margin-top:26px;flex-wrap:wrap}
-    .case .metrics b{display:block;font-family:var(--serif);font-size:1.9rem;color:var(--bg)}
-    .case .metrics span{font-size:12.5px;color:color-mix(in oklab,var(--bg) 60%,transparent)}
-    .case a.btn-ghost{background:transparent;border-color:color-mix(in oklab,var(--bg) 30%,transparent);color:var(--bg)}
+    .case{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:center;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:clamp(28px,4vw,44px)}
+    .case p{color:var(--muted);margin-top:14px}
+    .case .demo{background:var(--fg);border-radius:14px;padding:22px;font-family:var(--mono);font-size:12.5px;line-height:1.9;color:#e8dccb}
     @media(max-width:720px){.case{grid-template-columns:1fr}}
 
-    /* cta */
     .cta{text-align:center}
-    .cta h2{max-width:18ch;margin:0 auto}
-    .cta p{color:var(--muted);margin:18px auto 30px;max-width:46ch}
+    .cta h2{max-width:20ch;margin:0 auto}
+    .cta p{color:var(--muted);margin:18px auto 30px;max-width:48ch}
 
     footer{border-top:1px solid var(--border);padding:36px 0;color:var(--muted);font-size:14px}
     .foot-inner{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
@@ -130,10 +128,10 @@
     <div class="wrap nav-inner">
       <a class="brand" href="#top">Martin <span>Kaiser</span></a>
       <nav class="nav-links">
-        <a href="#leistungen">Leistungen</a>
-        <a href="#ablauf">Ablauf</a>
-        <a href="#referenz">Referenz</a>
-        <a class="btn btn-primary" href="#kontakt">Projekt anfragen</a>
+        <a href="#features">Features</a>
+        <a href="#kosten">Kosten</a>
+        <a href="#preis">Preis</a>
+        <a class="btn btn-primary" href="#kontakt">Anfragen</a>
       </nav>
     </div>
   </header>
@@ -142,100 +140,70 @@
     <!-- HERO -->
     <section class="hero">
       <div class="wrap">
-        <span class="eyebrow"><span class="dot"></span> Freelance Web-Entwicklung · Berlin</span>
-        <h1>Websites, die Anmeldungen einsammeln — nicht nur gut aussehen.</h1>
+        <span class="eyebrow"><span class="dot"></span> Newsletter-Integration · DSGVO-konform · EU-gehostet</span>
+        <h1>Dein eigener Newsletter. Deine Daten. Null laufende Kosten.</h1>
         <p class="hero-lede">
-          Ich baue schnelle, datensparsame Landingpages mit Event-Buchung, Newsletter und
-          automatischen E-Mails. EU-gehostet, DSGVO-konform, ohne Tracking — und so aufgebaut,
-          dass sie sich später ohne mich pflegen lassen.
+          Ich richte dir einen automatischen, DSGVO-konformen Newsletter ein — direkt in deine
+          bestehende Website. Anmeldeformular, Willkommens-Mail und Abmeldung laufen vollautomatisch.
+          Kein Mailchimp, kein Tracking, keine monatliche Abo-Falle.
         </p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#kontakt">Projekt besprechen →</a>
-          <a class="btn btn-ghost" href="#referenz">Live-Referenz ansehen</a>
+          <a class="btn btn-primary" href="#preis">Einrichtung ab 390 € →</a>
+          <a class="btn btn-ghost" href="#features">Was drin ist</a>
+          <span class="note">0 € laufende Kosten im Free-Tarif</span>
         </div>
-        <div class="stack-row">
-          <span class="chip">Netlify</span>
-          <span class="chip">Supabase / Postgres</span>
-          <span class="chip">Brevo</span>
-          <span class="chip">EU-Hosting</span>
-          <span class="chip">0 Cookies</span>
+        <div class="badges">
+          <span class="badge"><b>✓</b> Volle Datenkontrolle</span>
+          <span class="badge"><b>✓</b> Kostenfreies EU-Hosting</span>
+          <span class="badge"><b>✓</b> Kein Cookie-Banner nötig</span>
+          <span class="badge"><b>✓</b> Automatischer Versand</span>
         </div>
       </div>
     </section>
 
-    <!-- LEISTUNGEN / PRODUCTS -->
-    <section id="leistungen">
+    <!-- FEATURES -->
+    <section id="features">
       <div class="wrap">
         <div class="section-head">
-          <div class="kicker">Was ich anbiete</div>
-          <h2>Ein Baukasten und drei Wege, ihn zu nutzen.</h2>
-          <p>Vom fertigen Starter-Kit bis zur maßgeschneiderten Anwendung — auf demselben
-             erprobten Fundament aus Netlify, Supabase und Brevo.</p>
+          <div class="kicker">Was du bekommst</div>
+          <h2>Ein kompletter Newsletter-Flow — fertig eingerichtet.</h2>
+          <p>Keine halbe Lösung: vom Anmeldeformular bis zur automatischen Mail ist alles
+             verbunden und läuft ohne dein Zutun.</p>
         </div>
+        <div class="features">
+          <div class="feature"><div class="ico">✉️</div><h3>Automatische Willkommens-Mail</h3>
+            <p>Jede neue Anmeldung erhält sofort eine gestaltete Willkommens-Mail — auch bei erneutem Eintragen.</p></div>
+          <div class="feature"><div class="ico">📝</div><h3>Anmeldeformular in deiner Seite</h3>
+            <p>Das Formular wird in deine bestehende Website integriert — passend zu deinem Design, ohne externe Weiterleitung.</p></div>
+          <div class="feature"><div class="ico">🔁</div><h3>An- &amp; Abmeldung automatisch</h3>
+            <p>Eintragen, Bestätigen, Abmelden per persönlichem Link — sauber synchronisiert, ohne manuelle Pflege.</p></div>
+          <div class="feature"><div class="ico">🗂️</div><h3>Deine eigene Kontaktdatenbank</h3>
+            <p>Alle Kontakte liegen in deiner eigenen EU-Datenbank — jederzeit exportierbar, nichts in fremder Hand.</p></div>
+          <div class="feature"><div class="ico">🛡️</div><h3>DSGVO-konform &amp; ohne Tracking</h3>
+            <p>Kein Analytics, keine Marketing-Pixel, selbst-gehostete Schriften. EU-Hosting durchgängig.</p></div>
+          <div class="feature"><div class="ico">📈</div><h3>Mitwachsend</h3>
+            <p>Später Termin-Buchung, Promo-Codes oder Bestätigungs-Mails ergänzen? Der Unterbau ist darauf ausgelegt.</p></div>
+        </div>
+      </div>
+    </section>
 
-        <div class="products">
-          <!-- Featured product = the template -->
-          <article class="product feature">
-            <div class="grid">
-              <div>
-                <span class="tag">Produkt · Starter-Kit</span>
-                <h3 style="font-size:1.5rem;margin:14px 0 10px">Event- & Community-Seite, schlüsselfertig</h3>
-                <p style="font-size:1.02rem">
-                  Eine konfigurierbare Landingpage mit Terminbuchung, Live-Platzanzeige,
-                  Newsletter und automatischer Buchungs- und Willkommens-Mail. Eine Datei
-                  ausfüllen, generieren, deployen — fertig.
-                </p>
-                <ul>
-                  <li>Buchung mit Kapazitätsgrenze &amp; Storno-Link</li>
-                  <li>Newsletter mit Double-Opt-in-tauglichem Mail-Flow</li>
-                  <li>Impressum, Datenschutz &amp; AGB vorbereitet</li>
-                  <li>Komplett aus <code>site.config.json</code> gesteuert</li>
-                </ul>
-                <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap">
-                  <a class="btn btn-primary" href="#kontakt">Kit anfragen</a>
-                  <a class="btn btn-ghost" href="#ablauf">So läuft's</a>
-                </div>
-              </div>
-              <div class="demo" aria-hidden="true">
-<span class="c">// site.config.json</span>
-{
-  <span class="k">"brand"</span>: { <span class="k">"name"</span>: <span class="s">"Dein Event"</span> },
-  <span class="k">"theme"</span>: { <span class="k">"accent"</span>: <span class="s">"#c2410c"</span> },
-  <span class="k">"events"</span>: [
-    { <span class="k">"label"</span>: <span class="s">"12. Sept"</span>,
-      <span class="k">"date"</span>:  <span class="s">"2026-09-12"</span> }
-  ],
-  <span class="k">"brevo"</span>:    { <span class="k">"listId"</span>: 2 },
-  <span class="k">"supabase"</span>: { <span class="k">"projectRef"</span>: <span class="s">"…"</span> }
-}
-
-<span class="c">$ npm run generate</span>
-<span class="s">✓ Generated → dist/ (deploy-ready)</span>
-              </div>
-            </div>
-          </article>
-
-          <!-- Other offerings -->
-          <article class="product">
-            <span class="tag">Service</span>
-            <h3>Maßgeschneiderte Web-Apps</h3>
-            <p>Wenn das Kit nicht reicht: individuelle Anwendungen mit Auth, Datenbank-Logik
-               und Integrationen — auf demselben stabilen Stack.</p>
-          </article>
-
-          <article class="product">
-            <span class="tag">Service</span>
-            <h3>Backend &amp; Mail-Automation</h3>
-            <p>Supabase-Schemas, Edge Functions, Postgres-Trigger und Brevo-Flows für
-               bestehende Seiten — sauber, nachvollziehbar, dokumentiert.</p>
-          </article>
-
-          <article class="product">
-            <span class="tag">Beratung</span>
-            <h3>Stack-Audit &amp; Umzug</h3>
-            <p>Raus aus teuren Baukästen und Tracking-Lastigem. Migration zu EU-Hosting
-               ohne Cookies — mit Fokus auf Tempo und Datenschutz.</p>
-          </article>
+    <!-- KOSTEN & AUTONOMIE -->
+    <section id="kosten">
+      <div class="wrap">
+        <div class="highlight">
+          <div class="kicker">Kosten &amp; Unabhängigkeit</div>
+          <h2>Einmal einrichten. Danach läuft es — kostenfrei.</h2>
+          <div class="cost-grid">
+            <div class="cost"><b>0 €</b><span>Laufende Kosten im Free-Tarif von Hosting, Datenbank und Mail-Versand.</span></div>
+            <div class="cost"><b>~9.000</b><span>E-Mails pro Monat im kostenfreien Versand-Tarif (≈ 300/Tag) — unbegrenzte Kontakte.</span></div>
+            <div class="cost"><b>100 %</b><span>Datenhoheit: deine Datenbank, deine Kontakte, jederzeit exportierbar.</span></div>
+            <div class="cost"><b>0</b><span>Tracking-Cookies — kein Banner, keine Drittanbieter-Skripte.</span></div>
+          </div>
+          <p class="fine">
+            Hosting über Netlify, Datenbank über Supabase (EU, Frankfurt-Region), Mail-Versand über Brevo (EU/Frankreich).
+            Genannte Limits entsprechen den aktuellen kostenfreien Tarifen der Anbieter; bei höherem Volumen sind günstige
+            Upgrades möglich — du entscheidest, es gibt keine Bindung an mich.
+          </p>
         </div>
       </div>
     </section>
@@ -244,71 +212,75 @@
     <section id="ablauf" style="background:var(--surface-warm)">
       <div class="wrap">
         <div class="section-head">
-          <div class="kicker">Ablauf</div>
-          <h2>Von der Idee zur Live-Seite in drei Schritten.</h2>
+          <div class="kicker">Ablauf der Einrichtung</div>
+          <h2>Ich übernehme das Aufsetzen — du nutzt es danach selbst.</h2>
         </div>
         <div class="flow">
-          <div class="step">
-            <h3>Konfigurieren</h3>
-            <p>Marke, Farben, Termine, Preise und Mail-Texte landen in einer einzigen
-               Konfigurationsdatei — kein Code-Wühlen.</p>
-          </div>
-          <div class="step">
-            <h3>Generieren</h3>
-            <p>Ein Befehl baut daraus die fertige Seite samt Funktionen, Kalender-Dateien
-               und Datenbank-Migration.</p>
-          </div>
-          <div class="step">
-            <h3>Deployen</h3>
-            <p>Frontend auf Netlify, Backend auf Supabase, Mail über Brevo. Übergabe inklusive
-               Dokumentation — du bleibst unabhängig.</p>
-          </div>
+          <div class="step"><h3>Accounts &amp; Setup</h3><p>Ich richte Datenbank, Hosting und Mail-Versand auf deinen eigenen Konten ein — du bleibst Eigentümer.</p></div>
+          <div class="step"><h3>Integration</h3><p>Anmeldeformular und Willkommens-Mail werden in deine bestehende Seite eingebaut und getestet.</p></div>
+          <div class="step"><h3>Übergabe</h3><p>Kurze Einweisung plus schriftliche Doku. Neue Mails verschickst du selbst — oder buchst mich bei Bedarf.</p></div>
         </div>
       </div>
     </section>
 
-    <!-- WARUM / VALUES -->
-    <section id="warum">
+    <!-- PREIS -->
+    <section id="preis">
       <div class="wrap">
         <div class="section-head">
-          <div class="kicker">Warum dieser Stack</div>
-          <h2>Schnell, günstig im Betrieb, und respektvoll mit Daten.</h2>
+          <div class="kicker">Preis</div>
+          <h2>Transparente Einrichtungspauschale. Keine Abo-Kosten.</h2>
         </div>
-        <div class="values">
-          <div class="value"><h3>EU-gehostet</h3><p>Alle personenbezogenen Daten bleiben in der EU — Supabase (eu-west-1), Brevo (FR), Netlify EU-Edge.</p></div>
-          <div class="value"><h3>Kein Tracking</h3><p>Keine Marketing-Cookies, kein Analytics-Pixel, selbst-gehostete Schriften. Cookie-Banner überflüssig.</p></div>
-          <div class="value"><h3>Niedrige Fixkosten</h3><p>Läuft auf den kostenlosen bzw. günstigen Tiers der Anbieter — ideal für kleine Veranstalter.</p></div>
-          <div class="value"><h3>Wartbar</h3><p>Eine Konfigurationsdatei als Quelle der Wahrheit. Neue Termine ändern, neu generieren, fertig.</p></div>
+        <div class="price-grid">
+          <div class="price-card main">
+            <span class="tag">Einrichtung · einmalig</span>
+            <h3>Newsletter-Integration</h3>
+            <div class="amount">390 € <small>einmalig</small></div>
+            <div class="sub">Komplett eingerichtet, getestet und übergeben.</div>
+            <ul>
+              <li>Datenbank &amp; Mail-Versand auf deinen Konten aufgesetzt</li>
+              <li>Anmeldeformular in deine bestehende Website integriert</li>
+              <li>Automatische Willkommens-Mail (gestaltet)</li>
+              <li>An-/Abmelde-Flow mit persönlichem Link</li>
+              <li>DSGVO-Hinweise &amp; Doku zur Übergabe</li>
+            </ul>
+            <div class="foot"><a class="btn btn-primary" href="#kontakt">Einrichtung anfragen</a></div>
+          </div>
+          <div class="price-aside">
+            <div class="box">
+              <h3>Laufende Kosten</h3>
+              <p class="running">0 €</p>
+              <p>im kostenfreien Tarif der Anbieter — du zahlst nur bei deutlich höherem Versandvolumen.</p>
+            </div>
+            <div class="box">
+              <h3>Optionales Add-on</h3>
+              <p><strong>Termin-Buchung +250 €</strong><br>
+                 Event-Anmeldung mit Plätze-Anzeige, Bestätigungs-Mail und Storno — auf demselben Unterbau.</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- REFERENZ / CASE -->
+    <!-- REFERENZ -->
     <section id="referenz">
       <div class="wrap">
         <div class="case">
           <div>
-            <div class="kicker">Live-Referenz</div>
-            <h2>Cashflow Treff Berlin</h2>
-            <p>Monatlicher Spiele-Abend in Berlin: editorial gestaltete Landingpage mit
-               Live-Platzanzeige, Mehrfach-Terminbuchung, Promo-Codes, Buchungsbestätigung
-               mit Kalender-Link und Newsletter — exakt auf diesem Baukasten gebaut.</p>
-            <div class="metrics">
-              <div><b>18</b><span>Plätze / Termin, atomar gezählt</span></div>
-              <div><b>0</b><span>Tracking-Cookies</span></div>
-              <div><b>3</b><span>Dienste, ein Config-File</span></div>
-            </div>
-            <div style="margin-top:28px">
-              <a class="btn btn-ghost" href="https://cashflow-treff.de" target="_blank" rel="noopener">cashflow-treff.de besuchen →</a>
+            <div class="kicker">Live im Einsatz</div>
+            <h2>cashflow-treff.de</h2>
+            <p>Newsletter, Terminbuchung und automatische Mails — exakt auf diesem Unterbau,
+               seit Monaten produktiv im Einsatz. EU-gehostet, ohne ein einziges Tracking-Cookie.</p>
+            <div style="margin-top:24px">
+              <a class="btn btn-ghost" href="https://cashflow-treff.de" target="_blank" rel="noopener">Referenz ansehen →</a>
             </div>
           </div>
-          <div class="demo" style="background:rgba(255,255,255,.06);border-radius:14px;padding:24px;font-family:var(--mono);font-size:12.5px;line-height:1.9;color:#e8dccb">
-            <div style="color:#8a7d6b">Visitor → Netlify (HTML + Form)</div>
-            <div>&nbsp;&nbsp;↓ signup</div>
-            <div style="color:#9fcf7f">Supabase · book_event() RPC</div>
-            <div>&nbsp;&nbsp;↓ AFTER INSERT trigger</div>
-            <div style="color:#e0a04d">Brevo · Bestätigung + Welcome</div>
-            <div>&nbsp;&nbsp;↘ .ics · Storno-Link · EU only</div>
+          <div class="demo" aria-hidden="true">
+            <div style="color:#8a7d6b">Besucher trägt sich ein</div>
+            <div>&nbsp;&nbsp;↓</div>
+            <div style="color:#9fcf7f">deine EU-Datenbank speichert den Kontakt</div>
+            <div>&nbsp;&nbsp;↓ automatisch</div>
+            <div style="color:#e0a04d">Willkommens-Mail wird verschickt</div>
+            <div>&nbsp;&nbsp;↘ Abmeldung jederzeit per Link</div>
           </div>
         </div>
       </div>
@@ -318,17 +290,17 @@
     <section id="kontakt" class="cta">
       <div class="wrap">
         <div class="kicker" style="text-align:center">Kontakt</div>
-        <h2>Hast du ein Event, eine Community oder einen Newsletter?</h2>
-        <p>Erzähl mir kurz davon — ich melde mich mit einer ehrlichen Einschätzung,
-           ob das Starter-Kit reicht oder etwas Eigenes sinnvoller ist.</p>
-        <a class="btn btn-primary" href="mailto:martinkaiser.bln@gmail.com?subject=Projektanfrage%20Website">martinkaiser.bln@gmail.com</a>
+        <h2>Bereit für deinen eigenen Newsletter?</h2>
+        <p>Schreib mir kurz, welche Website du hast und wofür der Newsletter sein soll —
+           du bekommst eine klare Einschätzung und ein verbindliches Angebot.</p>
+        <a class="btn btn-primary" href="mailto:martinkaiser.bln@gmail.com?subject=Newsletter-Einrichtung%20Anfrage">martinkaiser.bln@gmail.com</a>
       </div>
     </section>
   </main>
 
   <footer>
     <div class="wrap foot-inner">
-      <span>© 2026 Martin Kaiser · Web-Entwicklung, Berlin</span>
+      <span>© 2026 Martin Kaiser · Web-Integration, Berlin</span>
       <span>
         <a href="https://cashflow-treff.de" target="_blank" rel="noopener">Referenz</a> ·
         <a href="mailto:martinkaiser.bln@gmail.com">E-Mail</a>
