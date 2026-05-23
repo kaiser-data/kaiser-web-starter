@@ -1,0 +1,17 @@
+{
+  "name": "brevo-netlify-supabase-starter",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Config-driven landing page + event booking + newsletter on Netlify, Supabase and Brevo. Fill in site.config.json, run generate, deploy.",
+  "type": "commonjs",
+  "scripts": {
+    "generate": "node scripts/generate.js",
+    "dev": "node scripts/generate.js && npx --yes serve dist -l 5000",
+    "deploy": "node scripts/generate.js && netlify deploy --prod --dir dist",
+    "deploy:functions": "supabase functions deploy book-event && supabase functions deploy cancel-booking && supabase functions deploy sync-brevo-contact --no-verify-jwt"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

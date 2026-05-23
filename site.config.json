@@ -1,0 +1,111 @@
+{
+  "$schema": "./site.config.schema.json",
+
+  "brand": {
+    "name": "Cashflow Treff Berlin",
+    "shortName": "Cashflow Treff",
+    "domain": "cashflow-treff.de",
+    "siteUrl": "https://cashflow-treff.de",
+    "lang": "de",
+    "contactEmail": "shuying.lu@cashflow-treff.de",
+    "copyrightYear": "2026"
+  },
+
+  "theme": {
+    "bg": "oklch(97.5% 0.009 78)",
+    "surface": "#ffffff",
+    "surfaceWarm": "oklch(96.5% 0.014 80)",
+    "fg": "oklch(16% 0.022 62)",
+    "muted": "oklch(50% 0.018 68)",
+    "subtle": "oklch(74% 0.016 72)",
+    "border": "oklch(89% 0.016 78)",
+    "accent": "oklch(59% 0.168 50)",
+    "accentBg": "oklch(95.5% 0.030 82)",
+    "fontSerif": "'Playfair Display', 'Iowan Old Style', Georgia, serif",
+    "fontSans": "-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif"
+  },
+
+  "hero": {
+    "eyebrow": "Berlin · Cashflow Spiel Abend",
+    "title": "Raus aus dem Hamsterrad.",
+    "lede": "Ein Abend, an dem finanzielle Entscheidungen sichtbar werden – spielerisch, konkret, in kleiner Runde.",
+    "ctaLabel": "Anmeldung zum nächsten Event",
+    "facts": ["Monatlich in Berlin", "Kleine Gruppe", "Kein Vorwissen nötig", "18:30 Einlass"]
+  },
+
+  "venue": {
+    "name": "Hotel Motel One Berlin Tiergarten",
+    "entranceHint": "(rechts vom Eingang)",
+    "address": "An der Urania 12/14, 10787 Berlin",
+    "arrivalTime": "18:30",
+    "startTime": "19:00"
+  },
+
+  "booking": {
+    "enabled": true,
+    "capacity": 18,
+    "price": 15,
+    "currency": "€",
+    "promoCode": "SHUYING",
+    "paymentNote": "Bar vor Ort oder vorab per PayPal"
+  },
+
+  "events": [
+    {
+      "slug": "cashflow-2026-05-26",
+      "label": "26. Mai 2026",
+      "title": "Cashflow Treff Berlin – 26. Mai 2026",
+      "date": "2026-05-26",
+      "start": "2026-05-26T18:30:00",
+      "end": "2026-05-26T22:00:00",
+      "tzOffset": "+02:00",
+      "active": true,
+      "listed": true
+    },
+    {
+      "slug": "cashflow-2026-06-24",
+      "label": "24. Juni 2026",
+      "title": "Cashflow Treff Berlin – 24. Juni 2026",
+      "date": "2026-06-24",
+      "start": "2026-06-24T18:30:00",
+      "end": "2026-06-24T22:00:00",
+      "tzOffset": "+02:00",
+      "active": true,
+      "listed": true
+    },
+    {
+      "slug": "cashflow-2026-07-22",
+      "label": "22. Juli 2026",
+      "title": "Cashflow Treff Berlin – 22. Juli 2026",
+      "date": "2026-07-22",
+      "start": "2026-07-22T18:30:00",
+      "end": "2026-07-22T22:00:00",
+      "tzOffset": "+02:00",
+      "active": false,
+      "listed": false
+    }
+  ],
+
+  "supabase": {
+    "projectRef": "ixspzavtjshdqmpdfuqa",
+    "url": "https://ixspzavtjshdqmpdfuqa.supabase.co",
+    "anonKey": "PASTE_YOUR_SUPABASE_ANON_KEY_HERE"
+  },
+
+  "brevo": {
+    "listId": 2,
+    "welcomeTemplateId": 1,
+    "senderEmail": "shuying.lu@cashflow-treff.de",
+    "senderName": "Cashflow Treff Berlin"
+  },
+
+  "legal": {
+    "operatorName": "Martin Kaiser",
+    "operatorAddressLine1": "Sparrstraße 28",
+    "operatorAddressLine2": "13353 Berlin",
+    "operatorCountry": "Deutschland",
+    "operatorEmail": "martinkaiser.bln@gmail.com",
+    "hostName": "Veranstalterin ist Shuying Lu",
+    "supervisoryAuthority": "Berliner Beauftragte für Datenschutz und Informationsfreiheit, Friedrichstr. 219, 10969 Berlin"
+  }
+}

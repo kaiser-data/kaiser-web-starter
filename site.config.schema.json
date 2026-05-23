@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Event & Newsletter Site config",
+  "type": "object",
+  "required": ["brand", "theme", "hero", "venue", "booking", "events", "supabase", "brevo", "legal"],
+  "additionalProperties": true,
+  "properties": {
+    "brand": {
+      "type": "object",
+      "required": ["name", "siteUrl", "contactEmail"],
+      "properties": {
+        "name": { "type": "string", "description": "Full brand name, e.g. 'Cashflow Treff Berlin'." },
+        "shortName": { "type": "string", "description": "Short brand used in chrome/masthead." },
+        "domain": { "type": "string" },
+        "siteUrl": { "type": "string", "format": "uri" },
+        "lang": { "type": "string", "default": "de", "description": "Sets <html lang>." },
+        "contactEmail": { "type": "string", "format": "email" },
+        "copyrightYear": { "type": "string" }
+      }
+    },
+    "theme": {
+      "type": "object",
+      "description": "Values are injected verbatim into CSS custom properties.",
+      "properties": {
+        "bg": { "type": "string" }, "surface": { "type": "string" },
+        "surfaceWarm": { "type": "string" }, "fg": { "type": "string" },
+        "muted": { "type": "string" }, "subtle": { "type": "string" },
+        "border": { "type": "string" }, "accent": { "type": "string" },
+        "accentBg": { "type": "string" }, "fontSerif": { "type": "string" },
+        "fontSans": { "type": "string" }
+      }
+    },
+    "hero": {
+      "type": "object",
+      "properties": {
+        "eyebrow": { "type": "string" }, "title": { "type": "string" },
+        "lede": { "type": "string" }, "ctaLabel": { "type": "string" },
+        "facts": { "type": "array", "items": { "type": "string" }, "description": "Short labels in the facts strip." }
+      }
+    },
+    "venue": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" }, "entranceHint": { "type": "string" },
+        "address": { "type": "string" }, "arrivalTime": { "type": "string" },
+        "startTime": { "type": "string" }
+      }
+    },
+    "booking": {
+      "type": "object",
+      "required": ["price"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "capacity": { "type": "integer", "minimum": 0, "description": "Default capacity seeded per event." },
+        "price": { "type": "integer", "minimum": 0 },
+        "currency": { "type": "string" },
+        "promoCode": { "type": "string", "description": "MUST be UPPERCASE — compared case-sensitively after uppercasing input." },
+        "paymentNote": { "type": "string" }
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["slug", "label", "title", "date", "start", "end"],
+        "properties": {
+          "slug": { "type": "string", "description": "Stable URL-safe id, e.g. 'cashflow-2026-05-26'." },
+          "label": { "type": "string", "description": "Human label shown in the checkbox, e.g. '26. Mai 2026'." },
+          "title": { "type": "string", "description": "Event title used in DB + mail subject." },
+          "date": { "type": "string", "format": "date" },
+          "start": { "type": "string", "description": "Local ISO datetime, e.g. '2026-05-26T18:30:00'." },
+          "end": { "type": "string" },
+          "tzOffset": { "type": "string", "default": "+02:00" },
+          "active": { "type": "boolean", "description": "Bookable in DB (RLS/RPC)." },
+          "listed": { "type": "boolean", "description": "Shown as a checkbox on the page." }
+        }
+      }
+    },
+    "supabase": {
+      "type": "object",
+      "required": ["projectRef", "url"],
+      "properties": {
+        "projectRef": { "type": "string", "description": "MUST match the linked project (used in the DB trigger URL)." },
+        "url": { "type": "string", "format": "uri" },
+        "anonKey": { "type": "string", "description": "Public by design — protected by RLS." }
+      }
+    },
+    "brevo": {
+      "type": "object",
+      "properties": {
+        "listId": { "type": "integer" },
+        "welcomeTemplateId": { "type": "integer" },
+        "senderEmail": { "type": "string", "format": "email" },
+        "senderName": { "type": "string" }
+      }
+    },
+    "legal": {
+      "type": "object",
+      "properties": {
+        "operatorName": { "type": "string" },
+        "operatorAddressLine1": { "type": "string" },
+        "operatorAddressLine2": { "type": "string" },
+        "operatorCountry": { "type": "string" },
+        "operatorEmail": { "type": "string", "format": "email" },
+        "hostName": { "type": "string" },
+        "supervisoryAuthority": { "type": "string" }
+      }
+    }
+  }
+}

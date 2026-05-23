@@ -1,0 +1,1486 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{brand.name}} — Spielerisch zur finanziellen Freiheit</title>
+  <meta name="description" content="Monatliches Cashflow-Spiel-Meetup in Berlin. Kleine Runde, echte Gespräche, direkte Erkenntnisse.">
+
+  <link rel="stylesheet" href="/fonts/playfair.css">
+
+  <style>
+    /* ─── Tokens ─────────────────────────────────── */
+    :root {
+      --bg:           {{theme.bg}};
+      --surface:      {{theme.surface}};
+      --surface-warm: {{theme.surfaceWarm}};
+      --fg:           {{theme.fg}};
+      --muted:        {{theme.muted}};
+      --subtle:       {{theme.subtle}};
+      --border:       {{theme.border}};
+      --accent:       {{theme.accent}};
+      --accent-bg:    {{theme.accentBg}};
+
+      --font-serif:  {{theme.fontSerif}};
+      --font-sans:   {{theme.fontSans}};
+      --font-mono:   'Fira Code', ui-monospace, SFMono-Regular, monospace;
+
+      --max-w:       1360px;
+      --px:          clamp(20px, 5vw, 60px);
+      --radius:      22px;
+      --radius-lg:   32px;
+      --shadow:      0 1px 2px rgba(50,36,22,.04), 0 6px 20px rgba(50,36,22,.07);
+      --shadow-hero: 0 24px 80px rgba(50,36,22,.14);
+    }
+
+    /* ─── Reset ──────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--fg);
+      background: var(--bg);
+      text-wrap: pretty;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    ul { margin: 0; padding-left: 1.25em; }
+
+    /* ─── Layout ─────────────────────────────────── */
+    .page {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 var(--px) 80px;
+    }
+
+    /* ─── Masthead ───────────────────────────────── */
+    .masthead {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px max(var(--px), calc((100vw - var(--max-w)) / 2 + var(--px)));
+      margin-inline: calc(50% - 50vw);
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition: background 250ms ease, border-color 250ms ease, backdrop-filter 250ms ease;
+    }
+    .masthead.scrolled {
+      background: color-mix(in oklab, var(--bg) 88%, transparent);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom-color: var(--border);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .brand-mark {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      display: grid; place-items: center;
+      background: var(--accent-bg);
+      border: 1px solid color-mix(in oklab, var(--accent) 20%, var(--border));
+      font-family: var(--font-serif);
+      font-size: 17px;
+      color: var(--fg);
+    }
+    .brand strong { color: var(--fg); font-size: 14px; }
+    .nav { display: flex; flex-wrap: wrap; gap: 6px; }
+    .nav a {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.6);
+      font-size: 13px;
+      color: var(--muted);
+      transition: background 150ms, color 150ms;
+    }
+    .nav a:hover { background: var(--surface); color: var(--fg); }
+
+    /* ─── Hero ───────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: min(90vh, 920px);
+      padding: clamp(40px, 6vw, 80px) 0;
+      margin-inline: calc(50% - 50vw);
+      border-radius: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: var(--fg);
+    }
+
+    /* Slideshow */
+    .hero-slides {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      animation: fadeSlide 24s ease-in-out infinite both;
+      will-change: opacity;
+    }
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .slide:nth-child(1) { animation-delay:  0s; }
+    .slide:nth-child(2) { animation-delay:  6s; }
+    .slide:nth-child(3) { animation-delay: 12s; }
+    .slide:nth-child(4) { animation-delay: 18s; }
+    @keyframes fadeSlide {
+      0%   { opacity: 0; }
+      5%   { opacity: 0.35; }
+      22%  { opacity: 0.35; }
+      27%  { opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    /* Overlay on top of slides */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(180deg,
+        rgba(26,18,8,.15) 0%,
+        rgba(26,18,8,.60) 100%);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: var(--max-w);
+      width: 100%;
+      margin-inline: auto;
+      padding-inline: var(--px);
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      background: rgba(255,250,244,.12);
+      border: 1px solid rgba(255,250,244,.22);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: rgba(255,250,244,.72);
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      margin: 0 0 18px;
+      font-family: var(--font-serif);
+      font-size: clamp(2.6rem, 5.2vw, 5rem);
+      font-weight: 500;
+      line-height: .95;
+      letter-spacing: -.04em;
+      color: #fff;
+      max-width: 9ch;
+    }
+    .hero-lede {
+      margin: 0 0 28px;
+      font-size: 17px;
+      line-height: 1.65;
+      color: rgba(255,250,244,.80);
+      max-width: 50ch;
+    }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 46px;
+      padding: 0 22px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-family: var(--font-sans);
+      font-weight: 500;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform 160ms, opacity 160ms;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: #fff; color: var(--fg); border-color: #fff; }
+    .btn-ghost  { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.32); color: #fff; }
+    .btn.btn-primary.hero-cta {
+      min-height: 54px;
+      padding: 0 28px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(135deg, oklch(67% 0.18 58) 0%, oklch(61% 0.19 42) 100%);
+      border-color: rgba(255,255,255,.18);
+      box-shadow: 0 14px 34px rgba(129, 58, 18, .30);
+    }
+    .btn.btn-primary.hero-cta:hover {
+      background: linear-gradient(135deg, oklch(70% 0.19 58) 0%, oklch(64% 0.20 42) 100%);
+      box-shadow: 0 18px 40px rgba(129, 58, 18, .34);
+    }
+
+    .hero-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 32px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-strip-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .hero-strip-item::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* ─── Section chrome ─────────────────────────── */
+    .section { padding-top: clamp(44px, 5.5vw, 72px); }
+
+    .section-head {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+    .kicker {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+    h2 {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: clamp(1.75rem, 2.8vw, 2.6rem);
+      font-weight: 500;
+      line-height: 1.0;
+      letter-spacing: -.03em;
+    }
+    .section-intro {
+      max-width: 48ch;
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--muted);
+    }
+
+    /* ─── Cards ──────────────────────────────────── */
+    .card, .timeline-card, .founder-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 12px rgba(50,36,22,.06);
+      transition: transform 300ms ease, box-shadow 300ms ease;
+    }
+    .card:hover, .timeline-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(50,36,22,.11);
+    }
+    .card { padding: 24px; }
+    .card-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--subtle);
+      display: block;
+      margin-bottom: 12px;
+    }
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -.02em;
+      line-height: 1.25;
+    }
+    .card p, .card li {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    /* ─── Grids ──────────────────────────────────── */
+    .grid-3 { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
+
+    /* ─── Pull quote ─────────────────────────────── */
+    .pull-quote {
+      padding: clamp(28px, 4vw, 56px);
+      background: var(--accent-bg);
+      border-radius: var(--radius);
+    }
+    .pull-quote p {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 2.8vw, 2.4rem);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -.025em;
+      color: var(--fg);
+    }
+    .pull-quote cite {
+      display: block;
+      margin-top: 14px;
+      font-style: normal;
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ─── Timeline ───────────────────────────────── */
+    .timeline { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; }
+    .timeline-card { padding: 22px; }
+    .timeline-time {
+      display: inline-flex;
+      margin-bottom: 16px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--surface-warm);
+      border: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .timeline-card h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -.02em;
+    }
+    .timeline-card p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    /* ─── Photos ─────────────────────────────────── */
+
+    .photo-section-wrap {}
+
+    .photo-layout {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 10px;
+    }
+
+    /* No borders, no shadow — just the image */
+    .photo-card {
+      overflow: hidden;
+      border-radius: 18px;
+      background: var(--border);    /* placeholder color while loading */
+    }
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 500ms ease;
+    }
+    .photo-card:hover img { transform: scale(1.02); }
+
+    /* Tall main photo */
+    .photo-card.tall img { aspect-ratio: 3/4; }
+
+    /* Side stack */
+    .photo-stack { display: grid; gap: 10px; }
+    .photo-stack .photo-card img { aspect-ratio: 4/3; }
+
+    /* Caption: floating below, no box */
+    .photo-caption {
+      padding: 10px 4px 0;
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--muted);
+    }
+
+    /* Widescreen: much taller */
+    @media (min-width: 1200px) {
+      .photo-card.tall img   { aspect-ratio: 2/3; }
+      .photo-stack .photo-card img { aspect-ratio: 16/10; }
+      .photo-layout { gap: 14px; }
+    }
+
+    @media (min-width: 1600px) {
+      .photo-card.tall img   { aspect-ratio: 4/6; }
+    }
+
+    /* ─── Community ──────────────────────────────── */
+    .community-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .community-statement {
+      padding: clamp(24px, 3vw, 36px);
+      background: var(--fg);
+      color: #fff;
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 24px;
+      min-height: 280px;
+    }
+    .community-statement p {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: clamp(1.3rem, 2.2vw, 2rem);
+      font-weight: 400;
+      line-height: 1.15;
+      letter-spacing: -.02em;
+      color: rgba(255,250,244,.92);
+    }
+    .community-statement cite {
+      font-style: normal;
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(255,250,244,.40);
+    }
+    .community-cards {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .founder-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: start;
+      padding: 22px;
+    }
+    .founder-avatar {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--accent-bg);
+      border: 1px solid color-mix(in oklab, var(--accent) 18%, var(--border));
+      display: grid; place-items: center;
+      font-family: var(--font-serif);
+      font-size: 22px;
+      color: var(--fg);
+      flex-shrink: 0;
+    }
+    .founder-card h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -.01em;
+    }
+    .founder-card p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    /* ─── CTA / Signup ───────────────────────────── */
+    .cta-section {
+      margin-inline: calc(-1 * var(--px));
+      padding: clamp(56px, 7vw, 100px) var(--px);
+      background: var(--accent-bg);
+      border-top: 1px solid color-mix(in oklab, var(--accent) 18%, var(--border));
+      text-align: center;
+    }
+    .cta-inner {
+      max-width: 520px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .cta-section h3 {
+      margin: 0 0 12px;
+      font-family: var(--font-serif);
+      font-size: clamp(1.9rem, 3vw, 3rem);
+      font-weight: 500;
+      line-height: 1.0;
+      letter-spacing: -.04em;
+      color: var(--fg);
+    }
+    .cta-desc {
+      margin: 0 0 28px;
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 42ch;
+    }
+    .cta-venue {
+      margin: 0 auto 28px;
+      max-width: 42ch;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+      text-align: center;
+    }
+    .cta-venue strong {
+      color: var(--fg);
+      font-weight: 500;
+    }
+    /* ─── Signup-Karte ──────────────────────────── */
+    .signup-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 16px rgba(50,36,22,.07);
+      overflow: hidden;
+    }
+    .signup-card-email {
+      padding: 6px 6px 6px 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .signup-card-email input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 15px;
+      font-family: var(--font-sans);
+      color: var(--fg);
+      outline: none;
+      min-height: 44px;
+    }
+    .signup-card-email input::placeholder { color: var(--subtle); }
+    .signup-card-choices {
+      display: flex;
+      flex-direction: column;
+    }
+    .signup-card-choices .signup-choice {
+      border-radius: 0;
+      border: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .signup-card-choices .signup-choice:last-child { border-bottom: none; }
+    .signup-choice-disabled {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--border);
+      opacity: .45;
+      cursor: default;
+    }
+    .signup-choice-disabled .signup-choice-text strong { font-size: 14px; font-weight: 600; color: var(--fg); display: block; }
+    .signup-choice-disabled .signup-choice-text span   { font-size: 12px; color: var(--muted); }
+    .signup-card-payment {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+      background: var(--surface-warm);
+    }
+    .signup-card-payment.visible { display: flex; }
+    .signup-card-footer {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+    }
+    .btn-confirm {
+      width: 100%;
+      min-height: 46px;
+      border-radius: 999px;
+      background: var(--fg);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: opacity 160ms, transform 160ms;
+    }
+    .btn-confirm:hover { opacity: .85; transform: translateY(-1px); }
+    .btn-confirm:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+    /* Kalender-Reminder */
+    .cal-picker { position: relative; }
+    .cal-picker summary {
+      list-style: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface-warm);
+      transition: background 150ms, color 150ms;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .cal-picker summary::-webkit-details-marker { display: none; }
+    .cal-picker summary:hover { background: var(--border); color: var(--fg); }
+    .cal-note {
+      font-size: 11px;
+      color: var(--subtle);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+    .cal-options {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      z-index: 20;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(50,36,22,.12);
+      overflow: hidden;
+      min-width: 190px;
+    }
+    .cal-options a {
+      display: block;
+      padding: 11px 16px;
+      font-size: 13px;
+      color: var(--fg);
+      transition: background 120ms;
+    }
+    .cal-options a + a { border-top: 1px solid var(--border); }
+    .cal-options a:hover { background: var(--surface-warm); }
+
+
+    /* ─── Unified Signup Form ────────────────────── */
+    .signup-unified {
+      width: 100%;
+      max-width: 440px;
+      margin-top: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .signup-choice {
+      display: grid;
+      grid-template-columns: 18px minmax(0, 1fr);
+      align-items: start;
+      column-gap: 14px;
+      padding: 15px 18px;
+      background: var(--surface);
+      cursor: pointer;
+      transition: background 150ms;
+      user-select: none;
+    }
+    .signup-choice:has(input:checked) {
+      background: color-mix(in oklab, var(--accent) 5%, var(--surface));
+    }
+    .signup-choice input[type="checkbox"] {
+      width: 18px; height: 18px;
+      accent-color: var(--accent);
+      cursor: pointer;
+      margin-top: 2px;
+    }
+    .signup-choice-text {
+      display: grid;
+      gap: 3px;
+      min-width: 0;
+    }
+    .signup-choice-text strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--fg);
+      line-height: 1.3;
+    }
+    .signup-choice-text span {
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .signup-msg {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--muted);
+      min-height: 18px;
+    }
+    .signup-msg.ok  { color: oklch(42% .14 145); }
+    .signup-msg.err { color: oklch(45% .18 25); }
+
+    /* Success state */
+    .signup-success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 24px;
+      border-radius: var(--radius);
+      border: 1px solid color-mix(in oklab, var(--accent) 25%, var(--border));
+      background: color-mix(in oklab, var(--accent) 6%, var(--surface));
+      text-align: center;
+    }
+    .signup-success.active { display: flex; }
+    .signup-success-icon {
+      font-size: 28px;
+      line-height: 1;
+    }
+    .signup-success p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .signup-success strong {
+      display: block;
+      font-family: var(--font-serif);
+      font-size: 18px;
+      color: var(--fg);
+      letter-spacing: -.02em;
+      margin-bottom: 4px;
+    }
+
+    /* ─── Zahlungsblock ─────────────────────────── */
+    .payment-block {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      padding: 16px;
+      border-radius: var(--radius);
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+    .payment-block.visible { display: flex; }
+    .payment-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .payment-label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .payment-price {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: -.02em;
+      color: var(--fg);
+      transition: color 200ms;
+    }
+    .payment-price.free { color: oklch(42% .14 145); }
+    .payment-note {
+      font-size: 12px;
+      color: var(--subtle);
+    }
+    .promo-row {
+      display: flex;
+      gap: 8px;
+    }
+    .promo-input {
+      flex: 1;
+      min-height: 40px;
+      padding: 0 14px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface-warm);
+      font-size: 13px;
+      font-family: var(--font-sans);
+      color: var(--fg);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      outline: none;
+      transition: border-color 160ms, box-shadow 160ms;
+    }
+    .promo-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent);
+    }
+    .promo-input::placeholder { text-transform: none; letter-spacing: 0; color: var(--subtle); }
+    .promo-btn {
+      min-height: 40px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface-warm);
+      font-size: 13px;
+      color: var(--fg);
+      cursor: pointer;
+      transition: background 150ms;
+      white-space: nowrap;
+    }
+    .promo-btn:hover { background: var(--border); }
+    .promo-msg {
+      font-size: 12px;
+      min-height: 14px;
+      color: var(--muted);
+    }
+    .promo-msg.ok  { color: oklch(42% .14 145); }
+    .promo-msg.err { color: oklch(45% .18 25); }
+
+    @media (max-width: 680px) {
+      .termine-grid { grid-template-columns: 1fr; }
+    }
+    .cta-section footer { margin-top: clamp(36px, 4vw, 56px); }
+
+    .signup-form { min-width: 300px; }
+    .signup-row { display: flex; gap: 8px; }
+    .signup-input {
+      flex: 1;
+      min-height: 46px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface-warm);
+      font-size: 14px;
+      font-family: var(--font-sans);
+      color: var(--fg);
+      outline: none;
+      transition: border-color 160ms, box-shadow 160ms;
+    }
+    .signup-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 14%, transparent);
+    }
+    .signup-input::placeholder { color: var(--subtle); }
+    .signup-btn {
+      min-height: 46px;
+      white-space: nowrap;
+      background: var(--fg);
+      border-color: var(--fg);
+      color: #fff;
+    }
+    .signup-btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+    .signup-msg {
+      margin: 9px 4px 0;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--muted);
+      min-height: 18px;
+    }
+    .signup-msg.ok  { color: oklch(42% .14 145); }
+    .signup-msg.err { color: oklch(45% .18 25); }
+
+    /* ─── Footer ─────────────────────────────────── */
+    footer {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 20px;
+      margin-top: 20px;
+      border-top: 1px solid var(--border);
+      color: var(--subtle);
+      font-size: 12px;
+    }
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--fg); }
+
+    /* ─── Scroll reveal ─────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+      will-change: opacity, transform;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ─── Responsive ─────────────────────────────── */
+    @media (max-width: 1100px) {
+      .community-layout { grid-template-columns: 1fr; }
+      .community-cards { grid-template-rows: auto; grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 960px) {
+      .grid-3, .timeline, .photo-layout { grid-template-columns: repeat(2,minmax(0,1fr)); }
+      .signup-form { min-width: 0; width: 100%; }
+    }
+
+    @media (max-width: 680px) {
+      .grid-3, .timeline, .grid-2, .photo-layout, .community-cards { grid-template-columns: 1fr; }
+      .masthead { flex-direction: column; align-items: flex-start; }
+      .hero { min-height: 70vh; }
+      .section-head { flex-direction: column; align-items: flex-start; }
+      .signup-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+
+    <!-- Nav -->
+    <header class="masthead">
+      <div class="brand">
+        <div class="brand-mark">C</div>
+        <div>
+          <strong>{{brand.shortName}}</strong><br>
+          Berlin · monatlich
+        </div>
+      </div>
+      <nav class="nav" aria-label="Abschnitte">
+        <a href="#fuer-wen">Für wen</a>
+        <a href="#ablauf">Ablauf</a>
+        <a href="#fotos">Fotos</a>
+        <a href="#community">Community</a>
+        <a class="btn btn-primary" style="min-height:36px;padding:0 16px;font-size:13px" href="#anmeldung">Anmelden</a>
+      </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" id="top">
+      <div class="hero-slides" aria-hidden="true">
+        <div class="slide"><img src="img-hero.svg" loading="eager" alt="" style="object-position:center 40%"></div>
+        <div class="slide"><img src="img-1.svg" loading="lazy" alt="" style="object-position:center 30%"></div>
+        <div class="slide"><img src="img-2.svg" loading="lazy" alt="" style="object-position:center 20%"></div>
+        <div class="slide"><img src="img-3.svg" loading="lazy" alt=""></div>
+      </div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="hero-inner">
+        <div class="eyebrow">{{hero.eyebrow}}</div>
+        <h1>{{hero.title}}</h1>
+        <p class="hero-lede">
+          {{hero.lede}}
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary hero-cta" href="#anmeldung">{{hero.ctaLabel}}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Facts strip -->
+    <div class="hero-strip">
+      {{derived.heroFactsHtml}}
+    </div>
+
+    <!-- Für wen -->
+    <section class="section" id="fuer-wen">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Für wen</div>
+          <h2>Viel richtig machen —<br>und trotzdem nicht frei sein.</h2>
+        </div>
+        <p class="section-intro">
+          Drei Situationen, die viele kennen.
+        </p>
+      </div>
+      <div class="grid-3">
+        <article class="card">
+          <span class="card-label">Gutes Einkommen</span>
+          <h3>Sicher, aber nicht frei</h3>
+          <p>Inflation, Rentenangst, steigende Kosten – und das Gefühl, dass Sicherheit und Freiheit zwei verschiedene Dinge sind.</p>
+        </article>
+        <article class="card">
+          <span class="card-label">Erste Investments</span>
+          <h3>Angefangen, aber unklar</h3>
+          <p>ETFs, Krypto, Immobilien – alles irgendwie bekannt, aber der eigene Hebel fehlt noch.</p>
+        </article>
+        <article class="card">
+          <span class="card-label">Selbstständig</span>
+          <h3>Mehr Verantwortung, weniger Zeit</h3>
+          <p>Du willst ein System, das für dich mitarbeitet – nicht nur ein höheres Einkommen.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Pull quote -->
+    <section class="section">
+      <div class="pull-quote" data-od-id="pull-quote">
+        <p>Wie viele Entscheidungen trennst dich noch von finanzieller Freiheit?</p>
+        <cite>Der Kern des Abends</cite>
+      </div>
+    </section>
+
+    <!-- Was du mitnimmst -->
+    <section class="section" id="lernen">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Was du mitnimmst</div>
+          <h2>Konkrete Klarheit,<br>kein Seminar-Gefühl.</h2>
+        </div>
+      </div>
+      <div class="grid-2">
+        <article class="card">
+          <span class="card-label">Nach dem Abend</span>
+          <h3>Dein nächster Schritt</h3>
+          <ul>
+            <li>Ein klareres Bild, wo du gerade stehst</li>
+            <li>Konkrete Ideen, wie du vorhandenes Kapital besser nutzt</li>
+            <li>Ein realistisches Bild davon, wie finanzielle Freiheit aufgebaut wird</li>
+          </ul>
+        </article>
+        <article class="card">
+          <span class="card-label">Im Spiel sichtbar</span>
+          <h3>Deine Muster</h3>
+          <ul>
+            <li>Wie du unter Risiko entscheidest</li>
+            <li>Welche Chancen du erkennst – und welche nicht</li>
+            <li>Wie du über Vermögensaufbau denkst, wenn Zeit und Geld begrenzt sind</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- Ablauf -->
+    <section class="section" id="ablauf">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Ablauf</div>
+          <h2>Drei Phasen.<br>Null Frontalvortrag.</h2>
+        </div>
+      </div>
+      <div class="timeline">
+        <article class="timeline-card">
+          <div class="timeline-time">18:30 Uhr</div>
+          <h3>Ankommen</h3>
+          <p>Drink, Kennenlernen, kein Druck.</p>
+        </article>
+        <article class="timeline-card">
+          <div class="timeline-time">19:00 Uhr</div>
+          <h3>Cashflow spielen</h3>
+          <p>~90 Minuten Spiel, Entscheidungen, direkte Aha-Momente.</p>
+        </article>
+        <article class="timeline-card">
+          <div class="timeline-time">Danach</div>
+          <h3>Offener Austausch</h3>
+          <p>Aktien, Krypto, Immobilien – echte Gespräche in lockerer Runde.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Fotos -->
+    <section class="section" id="fotos">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Atmosphäre</div>
+          <h2>Kein Workshop.<br>Ein richtiger Abend.</h2>
+        </div>
+        <p class="section-intro">
+          Kleine Runde, echter Tisch, direkte Gespräche.
+        </p>
+      </div>
+      <div class="photo-section-wrap">
+        <div class="photo-layout">
+          <article class="photo-card tall">
+            <img src="img-3.svg" alt="Gruppe beim Cashflow-Spiel in Berlin">
+            <div class="photo-caption">Gemeinsam spielen, gemeinsam lernen – ohne Seminar-Atmosphäre.</div>
+          </article>
+          <div class="photo-stack">
+            <article class="photo-card">
+              <img src="img-2.svg" alt="Shuying moderiert den Abend">
+              <div class="photo-caption">Shuying führt durch den Abend – direkt, klar, ohne Bühnenpose.</div>
+            </article>
+            <article class="photo-card">
+              <img src="img-4.svg" alt="Teilnehmerrunde beim Cashflow-Spiel">
+              <div class="photo-caption">So sehen Gespräche über Geld aus, wenn der Rahmen stimmt.</div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community -->
+    <section class="section" id="community">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Community</div>
+          <h2>Keine Bühne.<br>Kein Skript.</h2>
+        </div>
+      </div>
+      <div class="community-layout">
+        <div class="community-statement">
+          <p>An einem Abend mehr verstehen als nach drei Monaten Podcasts.</p>
+          <cite>— Was Stammgäste sagen</cite>
+        </div>
+        <div class="community-cards">
+          <div class="founder-card">
+            <div class="founder-avatar">S</div>
+            <div>
+              <h3>Über Shuying</h3>
+              <p>Shuying fand 2023 selbst ihren Weg zur Anlegerin – von Überforderung zu echter Klarheit. Die Meetup-Gruppe entstand als Einladung: andere auf demselben Weg zu begleiten.</p>
+            </div>
+          </div>
+          <article class="card" style="border-radius:var(--radius);">
+            <span class="card-label">Wer kommt</span>
+            <h3>Offen, neugierig, herzlich</h3>
+            <p>Angestellte, Gründer:innen, Paare – die meisten mit erstem Finanzinteresse. Entspannte Atmosphäre, direkte Gespräche. Keine Zocker, keine Verkäufer, keine Expertenrunden.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section" id="anmeldung">
+      <div class="cta-inner">
+        <div class="kicker">Anmeldung</div>
+        <h3>Komm vorbei.</h3>
+        <p class="cta-desc">Trag deine E-Mail ein, wähle deinen Termin oder den Newsletter – fertig.</p>
+        <p class="cta-venue">
+          <strong>{{venue.name}}</strong> · {{venue.address}}<br>
+          Einlass {{venue.arrivalTime}} · Start {{venue.startTime}} Uhr
+        </p>
+
+        <div class="signup-unified" id="signupUnified">
+
+          <!-- Formular -->
+          <div class="signup-card" id="signupForm">
+
+            <!-- Checkboxen -->
+            <div class="signup-card-choices">
+              {{derived.eventChoicesHtml}}
+              <label class="signup-choice">
+                <input type="checkbox" id="chkNewsletter" value="newsletter">
+                <div class="signup-choice-text">
+                  <strong>Informiere über neue Termine</strong>
+                  <span>Trage mich in den Newsletter ein</span>
+                </div>
+              </label>
+            </div>
+
+            <!-- Zahlungsblock -->
+            <div class="signup-card-payment" id="paymentBlock">
+              <div class="payment-info">
+                <div>
+                  <div class="payment-label">Teilnahmebeitrag</div>
+                  <div class="payment-note">{{booking.paymentNote}}</div>
+                </div>
+                <div class="payment-price" id="paymentPrice">{{booking.price}} {{booking.currency}}</div>
+              </div>
+              <div class="promo-row">
+                <input class="promo-input" type="text" id="promoInput" placeholder="Promo-Code (optional)" maxlength="32">
+                <button class="promo-btn" type="button" onclick="applyPromo()">Anwenden</button>
+              </div>
+              <p class="promo-msg" id="promoMsg"></p>
+            </div>
+
+            <!-- Email + Submit -->
+            <div class="signup-card-footer">
+              <div class="signup-card-email" style="border-bottom:none;border-top:1px solid var(--border);margin-bottom:10px">
+                <input type="text" id="signupName" placeholder="Dein Name (optional)" autocomplete="name">
+              </div>
+              <div class="signup-card-email" style="border-bottom:none;border-top:1px solid var(--border);margin-bottom:10px">
+                <input type="email" id="signupEmail" placeholder="deine@email.de" autocomplete="email">
+              </div>
+              <div id="termsBlock" style="display:none;margin:10px 0 14px;font-size:13px;color:var(--muted);line-height:1.55">
+                <label style="display:flex;gap:9px;align-items:flex-start;cursor:pointer;padding:10px 0">
+                  <input type="checkbox" id="chkTerms" style="margin-top:3px;flex-shrink:0">
+                  <span>
+                    Ich akzeptiere die <a href="/agb.html" target="_blank" style="color:var(--fg);text-decoration:underline">Teilnahmebedingungen</a>
+                    und bin damit einverstanden, dass beim Treff gelegentlich Fotos für Website und Social Media entstehen können
+                    (Widerspruch jederzeit vor Ort möglich).
+                  </span>
+                </label>
+              </div>
+              <button class="btn-confirm" onclick="submitSignup()">Bestätigen →</button>
+              <p class="signup-msg" id="signupMsg2" style="margin-top:8px" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <!-- Erfolgsmeldung -->
+          <div class="signup-success" id="signupSuccess">
+            <div class="signup-success-icon">✓</div>
+            <div style="width:100%">
+              <strong>Eingetragen!</strong>
+              <p id="signupSuccessText"></p>
+              <div id="successCalLinks" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;justify-content:center"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <footer>
+        <span>
+          © {{brand.copyrightYear}} {{brand.name}}<br>
+          <a href="/impressum.html">Impressum</a> ·
+          <a href="/datenschutz.html">Datenschutz</a> ·
+          <a href="/agb.html">Teilnahmebedingungen</a>
+        </span>
+        <span>
+          <a href="mailto:{{brand.contactEmail}}">{{brand.contactEmail}}</a>
+        </span>
+      </footer>
+    </section>
+
+  </main>
+
+  <script>
+    // ── Unified Signup ─────────────────────────────
+    let promoApplied = '';
+    const PROMO_CODE = '{{booking.promoCode}}';
+
+    const TERMIN_IDS = {{derived.terminIdsJs}};
+
+    function getSelectedDates() {
+      return TERMIN_IDS.filter(id => document.getElementById(id)?.checked);
+    }
+
+    // ── Live capacity (event_availability RPC) ─────────────────────────
+    const SUPABASE_URL = '{{supabase.url}}';
+    const SUPABASE_ANON = '{{supabase.anonKey}}';
+
+    async function loadAvailability() {
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/event_availability`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` },
+        });
+        if (!res.ok) return;
+        const events = await res.json();
+        for (const ev of events) {
+          const statusEl = document.querySelector(`.termin-status[data-slug="${ev.slug}"]`);
+          const labelEl  = document.querySelector(`.signup-choice[data-slug="${ev.slug}"]`);
+          if (!statusEl || !labelEl) continue;
+          const remaining = ev.remaining_places;
+          const cb = labelEl.querySelector('input[type="checkbox"]');
+          if (remaining <= 0) {
+            statusEl.textContent = 'Ausgebucht';
+            statusEl.style.color = 'var(--accent)';
+            labelEl.classList.add('signup-choice-disabled');
+            labelEl.style.opacity = '0.55';
+            labelEl.style.pointerEvents = 'none';
+            if (cb) { cb.disabled = true; cb.checked = false; }
+          } else if (remaining <= 3) {
+            statusEl.textContent = `Nur noch ${remaining} ${remaining === 1 ? 'Platz' : 'Plätze'} frei`;
+            statusEl.style.color = 'var(--accent)';
+          } else {
+            statusEl.textContent = `Noch ${remaining} von ${ev.capacity} Plätzen frei`;
+            statusEl.style.color = 'var(--muted)';
+          }
+        }
+      } catch (e) {
+        // silently fall back to static labels
+        document.querySelectorAll('.termin-status').forEach(el => {
+          if (el.textContent.includes('wird geladen')) el.textContent = 'Ich komme zu diesem Termin';
+        });
+      }
+    }
+    document.addEventListener('DOMContentLoaded', loadAvailability);
+
+    function getBasePrice() {
+      return getSelectedDates().length * {{booking.price}};
+    }
+
+    function updatePaymentBlock() {
+      const checkedDates = getSelectedDates();
+      const anyDate = checkedDates.length > 0;
+      document.getElementById('paymentBlock').classList.toggle('visible', anyDate);
+      const termsBlock = document.getElementById('termsBlock');
+      if (termsBlock) termsBlock.style.display = anyDate ? 'block' : 'none';
+      if (anyDate) {
+        document.getElementById('paymentPrice').textContent = getBasePrice() + ' €';
+        document.getElementById('paymentPrice').className = 'payment-price';
+      }
+      promoApplied = '';
+      document.getElementById('promoInput').value = '';
+      document.getElementById('promoMsg').textContent = '';
+    }
+
+    function applyPromo() {
+      const input = document.getElementById('promoInput');
+      const msg   = document.getElementById('promoMsg');
+      const price = document.getElementById('paymentPrice');
+      const code  = input.value.trim().toUpperCase();
+
+      if (!code) {
+        msg.textContent = 'Bitte einen Code eingeben.';
+        msg.className = 'promo-msg err';
+        return;
+      }
+
+      if (code === PROMO_CODE) {
+        promoApplied = code;
+        price.textContent = '0 €';
+        price.className = 'payment-price free';
+        msg.textContent = 'Promo-Code angewendet ✓';
+        msg.className = 'promo-msg ok';
+        return;
+      }
+
+      promoApplied = '';
+      price.textContent = getBasePrice() + ' €';
+      price.className = 'payment-price';
+      msg.textContent = 'Ungültiger Promo-Code.';
+      msg.className = 'promo-msg err';
+    }
+
+    async function submitSignup() {
+      const name = document.getElementById('signupName').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
+      const msg = document.getElementById('signupMsg2');
+
+      const termine = TERMIN_IDS
+        .map(id => document.getElementById(id))
+        .filter(cb => cb?.checked)
+        .map(cb => cb.value);
+      const newsletter = document.getElementById('chkNewsletter').checked;
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        msg.textContent = 'Bitte gib eine gültige E-Mail-Adresse ein.';
+        msg.className = 'signup-msg err';
+        document.getElementById('signupEmail').focus();
+        return;
+      }
+
+      if (termine.length > 0) {
+        const termsOk = document.getElementById('chkTerms')?.checked;
+        if (!termsOk) {
+          msg.textContent = 'Bitte bestätige die Teilnahmebedingungen.';
+          msg.className = 'signup-msg err';
+          document.getElementById('chkTerms')?.focus();
+          return;
+        }
+      }
+      const btn = document.querySelector('.btn-confirm');
+
+      msg.textContent = '';
+      if (!termine.length && !newsletter) {
+        msg.textContent = 'Bitte mindestens eine Option auswählen.';
+        msg.className = 'signup-msg err';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = '…';
+
+      try {
+        const res = await fetch('/.netlify/functions/signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, termine, newsletter, promoCode: promoApplied }),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          // Update price display after server confirms
+          const price = document.getElementById('paymentPrice');
+          if (price) {
+            price.textContent = data.betrag === 0 ? '0 € ✓' : (data.betrag + ' €');
+            price.className = 'payment-price' + (data.betrag === 0 ? ' free' : '');
+          }
+          if (data.promoValid) {
+            const promoMsg = document.getElementById('promoMsg');
+            if (promoMsg) { promoMsg.textContent = 'Promo-Code angewendet ✓'; promoMsg.className = 'promo-msg ok'; }
+          }
+
+          document.getElementById('signupForm').style.display = 'none';
+          const parts = [];
+          if (termine.length) parts.push(termine.join(' & '));
+          if (newsletter) parts.push('Newsletter');
+          const allAlreadyBooked = termine.length > 0
+            && (data.bookings || []).length === termine.length
+            && (data.bookings || []).every(b => b.alreadyBooked);
+          let preisTxt = '';
+          let mailTxt = '';
+          if (termine.length) {
+            if (allAlreadyBooked) {
+              preisTxt = ' · Du bist bereits angemeldet';
+              mailTxt = '.';
+            } else if (data.promoValid && data.betrag === 0) {
+              preisTxt = ' · Eintritt: 0 € (Promo-Code)';
+              mailTxt = '. Buchungsbestätigung kommt per Mail.';
+            } else {
+              preisTxt = ` · Eintritt: ${data.betrag} € vor Ort`;
+              mailTxt = '. Buchungsbestätigung kommt per Mail.';
+            }
+          } else {
+            mailTxt = '. Willkommens-Mail ist unterwegs.';
+          }
+          document.getElementById('signupSuccessText').textContent =
+            parts.join(' + ') + preisTxt + mailTxt;
+
+          // Kalender-Links nach Anmeldung anzeigen
+          const calDates = {{derived.calDatesJs}};
+          const calContainer = document.getElementById('successCalLinks');
+          calContainer.innerHTML = '';
+          termine.forEach(t => {
+            const d = calDates[t];
+            if (!d) return;
+            const style = 'display:inline-flex;align-items:center;gap:5px;padding:6px 12px;border-radius:999px;border:1px solid var(--border);background:var(--surface-warm);font-size:12px;color:var(--fg);text-decoration:none;transition:background 150ms';
+            calContainer.innerHTML += `
+              <details class="cal-picker" style="display:inline-block">
+                <summary style="list-style:none;cursor:pointer;${style}">📅 ${t}</summary>
+                <div class="cal-options">
+                  <a href="${d.gcal}" target="_blank" rel="noopener">Google Calendar</a>
+                  <a href="${d.ics}" download>Apple / Outlook (.ics)</a>
+                </div>
+              </details>`;
+          });
+
+          document.getElementById('signupSuccess').classList.add('active');
+          // Refresh capacity counters in background
+          loadAvailability();
+        } else {
+          throw new Error(data.error || 'Unbekannter Fehler.');
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Bestätigen →';
+        msg.textContent = err.message || 'Etwas hat nicht geklappt – bitte nochmal versuchen.';
+        msg.className = 'signup-msg err';
+        // Reset promo display on invalid code
+        if (err.message?.includes('Promo')) {
+          const price = document.getElementById('paymentPrice');
+          if (price) { price.textContent = getBasePrice() + ' €'; price.className = 'payment-price'; }
+          const promoMsg = document.getElementById('promoMsg');
+          if (promoMsg) { promoMsg.textContent = 'Ungültiger Code.'; promoMsg.className = 'promo-msg err'; }
+          promoApplied = '';
+        }
+      }
+    }
+
+    // ── Scroll reveal ───────────────────────────────
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(({ target, isIntersecting }) => {
+        if (isIntersecting) {
+          target.classList.add('visible');
+          revealObserver.unobserve(target);
+        }
+      });
+    }, { threshold: 0.07, rootMargin: '0px 0px -48px 0px' });
+
+    document.querySelectorAll('.section, .pull-quote').forEach(el => {
+      el.classList.add('reveal');
+      revealObserver.observe(el);
+    });
+
+    // Sticky nav scroll behaviour
+    const masthead = document.querySelector('.masthead');
+    window.addEventListener('scroll', () => {
+      masthead.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+  </script>
+</body>
+</html>
